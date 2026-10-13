@@ -373,20 +373,21 @@
   .visit-count b{color:var(--gold-bright); font-weight:700;}
   .visit-label{display:none; letter-spacing:0.04em;}
   @media (min-width:1360px){.visit-label{display:inline;}}
+  /* ---- Celulares: header compacto para que quepa el logotipo ---- */
+  .nav-right{flex-shrink:0;}
   @media (max-width:520px){
-    .brand-wordmark{display:none;}
-    .nav-right{gap:8px;}
-    .nav-engage{gap:6px;}
-    .like-btn, .visit-count{padding:8px 11px; gap:6px;}
-    .lang-btn{padding:8px 11px;}
-  }
-  @media (max-width:360px){
     nav{padding-left:4vw; padding-right:4vw;}
-    .nav-right{gap:6px;}
-    .nav-engage{gap:5px;}
-    .like-btn, .visit-count{padding:8px 9px; gap:5px;}
-    .lang-btn{padding:8px 9px;}
+    .brand{min-width:0; flex:0 1 auto; gap:7px;}
+    .brand img.isotipo{width:30px; height:30px;}
+    .brand-wordmark{min-width:0; flex:0 1 auto; height:22px; max-width:100%;}
+    .nav-right{gap:3px; margin-left:6px;}
+    .nav-engage{gap:0;}
+    .like-btn{padding:8px 8px; gap:5px; font-size:11px;}
+    .visit-count{padding:8px 5px; gap:5px; font-size:11px; background:none; box-shadow:none;}
+    .lang-btn{padding:8px 8px; font-size:11px;}
+    .burger{width:34px; height:34px;}
   }
+  @media (max-width:339px){ .brand-wordmark{display:none;} }
 
   /* ---------- WORDMARK STRIP ---------- */
   .wordmark-strip{
@@ -1223,7 +1224,12 @@
     const likeCountEl = document.getElementById('likeCount');
     const visitCountEl = document.getElementById('visitCount');
     const visitWrap = document.getElementById('visitWrap');
-    const fmt = n => Number(n || 0).toLocaleString('es-MX');
+    const fmt = n => {
+      n = Number(n || 0);
+      if(n >= 1e6) return (n/1e6).toFixed(1).replace(/\.0$/, '') + 'M';
+      if(n >= 1e4) return (n/1e3).toFixed(1).replace(/\.0$/, '') + 'K';
+      return n.toLocaleString('es-MX');
+    };
     if(!SHOW_VISITOR_COUNT) visitWrap.style.display = 'none';
 
     const app = initializeApp(FIREBASE_CONFIG);
